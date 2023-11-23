@@ -13,25 +13,30 @@ export const LabelSizeDieCutW38H90 = 5;
 export const LabelSizeDieCutW39H48 = 6;
 export const LabelSizeDieCutW52H29 = 7;
 export const LabelSizeDieCutW62H29 = 8;
-export const LabelSizeDieCutW62H100 = 9;
-export const LabelSizeDieCutW60H86 = 10;
-export const LabelSizeDieCutW54H29 = 11;
-export const LabelSizeDieCutW102H51 = 12;
-export const LabelSizeDieCutW102H152 = 13;
-export const LabelSizeDieCutW103H164 = 14;
-export const LabelSizeRollW12 = 15;
-export const LabelSizeRollW29 = 16;
-export const LabelSizeRollW38 = 17;
-export const LabelSizeRollW50 = 18;
-export const LabelSizeRollW54 = 19;
-export const LabelSizeRollW62 = 20;
-export const LabelSizeRollW62RB = 21;
-export const LabelSizeRollW102 = 22;
-export const LabelSizeRollW103 = 23;
-export const LabelSizeDTRollW90 = 24;
-export const LabelSizeDTRollW102 = 25;
-export const LabelSizeDTRollW102H51 = 26;
-export const LabelSizeDTRollW102H152 = 27;
+export const LabelSizeDieCutW62H60 = 9;
+export const LabelSizeDieCutW62H75 = 10;
+export const LabelSizeDieCutW62H100 = 11;
+export const LabelSizeDieCutW60H86 = 12;
+export const LabelSizeDieCutW54H29 = 13;
+export const LabelSizeDieCutW102H51 = 14;
+export const LabelSizeDieCutW102H152 = 15;
+export const LabelSizeDieCutW103H164 = 16;
+export const LabelSizeRollW12 = 17;
+export const LabelSizeRollW29 = 18;
+export const LabelSizeRollW38 = 19;
+export const LabelSizeRollW50 = 20;
+export const LabelSizeRollW54 = 21;
+export const LabelSizeRollW62 = 22;
+export const LabelSizeRollW62RB = 23;
+export const LabelSizeRollW102 = 24;
+export const LabelSizeRollW103 = 25;
+export const LabelSizeDTRollW90 = 26;
+export const LabelSizeDTRollW102 = 27;
+export const LabelSizeDTRollW102H51 = 28;
+export const LabelSizeDTRollW102H152 = 29;
+export const LabelSizeRoundW12DIA = 30;
+export const LabelSizeRoundW24DIA = 31;
+export const LabelSizeRoundW58DIA = 32;
 
 export const LabelSize = {
   LabelSizeDieCutW17H54,
@@ -43,6 +48,8 @@ export const LabelSize = {
   LabelSizeDieCutW39H48,
   LabelSizeDieCutW52H29,
   LabelSizeDieCutW62H29,
+  LabelSizeDieCutW62H60,
+  LabelSizeDieCutW62H75,
   LabelSizeDieCutW62H100,
   LabelSizeDieCutW60H86,
   LabelSizeDieCutW54H29,
@@ -62,6 +69,9 @@ export const LabelSize = {
   LabelSizeDTRollW102,
   LabelSizeDTRollW102H51,
   LabelSizeDTRollW102H152,
+  LabelSizeRoundW12DIA,
+  LabelSizeRoundW24DIA,
+  LabelSizeRoundW58DIA
 }
 
 export const LabelNames = [
@@ -74,25 +84,30 @@ export const LabelNames = [
   "Die Cut 39mm x 48mm", // 6
   "Die Cut 52mm x 29mm", // 7
   "Die Cut 62mm x 29mm", // 8
-  "Die Cut 62mm x 100mm", // 9
-  "Die Cut 60mm x 86mm", // 10
-  "Die Cut 54mm x 29mm", // 11
-  "Die Cut 102mm x 51mm", // 12
-  "Die Cut 102mm x 152mm", // 13
-  "Die Cut 103mm x 164mm", // 14
-  "12mm", // 15
-  "29mm", // 16
-  "38mm", // 17
-  "50mm", // 18
-  "54mm", // 19
-  "62mm", // 20
-  "62mm RB", // 21
-  "102mm", // 22
-  "103mm", // 23
-  "DT 90mm", // 24
-  "DT 102mm", // 25
-  "DT 102mm x 51mm", // 26
-  "DT 102mm x 152mm", // 27
+  "Die Cut 62mm x 60mm", // 9
+  "Die Cut 62mm x 75mm", // 10
+  "Die Cut 62mm x 100mm", // 11
+  "Die Cut 60mm x 86mm", // 12
+  "Die Cut 54mm x 29mm", // 13
+  "Die Cut 102mm x 51mm", // 14
+  "Die Cut 102mm x 152mm", // 15
+  "Die Cut 103mm x 164mm", // 16
+  "12mm", // 17
+  "29mm", // 18
+  "38mm", // 19
+  "50mm", // 20
+  "54mm", // 21
+  "62mm", // 22
+  "62mm RB", // 23
+  "102mm", // 24
+  "103mm", // 25
+  "DT 90mm", // 26
+  "DT 102mm", // 27
+  "DT 102mm x 51mm", // 28
+  "DT 102mm x 152mm", // 29
+  "Round 12mm", // 30
+  "Round 24mm", // 31
+  "Round 58mm", // 32
 ];
 
 /**
@@ -140,10 +155,6 @@ export async function printImage(device, uri, params = {}) {
   return ReactNativeBrotherPrinters?.printImage(device, uri, params);
 }
 
-// export async function printPDF(device, uri, params = {}) {
-//   return ReactNativeBrotherPrinters?.printPDF(device, uri, params);
-// }
-
 let listeners;
 if (ReactNativeBrotherPrinters) {
   listeners = new NativeEventEmitter(ReactNativeBrotherPrinters);
@@ -151,4 +162,8 @@ if (ReactNativeBrotherPrinters) {
 
 export function registerBrotherListener(key, method) {
   return listeners?.addListener(key, method);
+}
+
+export function getPrinterStatus(device) {
+  return ReactNativeBrotherPrinters?.getPrinterStatus(device);
 }

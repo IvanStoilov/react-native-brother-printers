@@ -8,6 +8,7 @@
 NSString *const DISCOVER_READERS_ERROR = @"DISCOVER_READERS_ERROR";
 NSString *const DISCOVER_READER_ERROR = @"DISCOVER_READER_ERROR";
 NSString *const PRINT_ERROR = @"PRINT_ERROR";
+NSString *const STATUS_ERROR = @"STATUS_ERROR";
 
 RCT_EXPORT_MODULE()
 
@@ -79,6 +80,51 @@ RCT_REMAP_METHOD(pingPrinter, printerAddress:(NSString *)ip resolver:(RCTPromise
     NSLog(@"We were able to discover a printer");
     [driverGenerateResult.driver closeChannel];
     resolve(Nil);
+}
+
+RCT_REMAP_METHOD(getPrinterStatus, deviceInfo:(NSDictionary *)device resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    NSLog(@"Called the getPrinterStatus function");
+    BRPtouchDeviceInfo *deviceInfo = [self deserializeDeviceInfo:device];
+    
+    BRLMChannel *channel = [[BRLMChannel alloc] initWithWifiIPAddress:deviceInfo.strIPAddress];
+
+    BRLMPrinterDriverGenerateResult *driverGenerateResult = [BRLMPrinterDriverGenerator openChannel:channel];
+    if (driverGenerateResult.error.code != BRLMOpenChannelErrorCodeNoError ||
+        driverGenerateResult.driver == nil) {
+        NSLog(@"%@", @(driverGenerateResult.error.code));
+        return;
+    }
+
+    BRLMPrinterDriver *printerDriver = driverGenerateResult.driver;
+    BRLMGetPrinterStatusResult *status = [printerDriver getPrinterStatus];
+    
+    if (status.error.code != BRLMGetStatusErrorCodeNoError) {
+        
+        NSLog(@"Error - getPrinterStatus: %@", status.error);
+
+        NSString *errorCodeString = [NSString stringWithFormat:@"Error code: %ld", (long)status.error.code];
+        NSString *errorDescription = [NSString stringWithFormat:@"%@ - %@", errorCodeString, status.error.description];
+
+        NSDictionary *userInfo = @{
+            NSLocalizedDescriptionKey: errorDescription,
+            @"errorCode": @(status.error.code),
+        };
+        
+        NSError *error = [NSError errorWithDomain:@"com.react-native-brother-printers.rn"
+                                            code:status.error.code
+                                        userInfo:userInfo];
+
+        [printerDriver closeChannel]; // Close the channel
+
+        reject(STATUS_ERROR, @"There was an error trying to get status", error);
+        
+        
+        
+    } else {
+        [printerDriver closeChannel];
+        resolve([self serializeDeviceStatus: status.status]);
+    }
 }
 
 RCT_REMAP_METHOD(printImage, deviceInfo:(NSDictionary *)device printerUri: (NSString *)imageStr printImageOptions:(NSDictionary *)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
@@ -199,20 +245,26 @@ RCT_REMAP_METHOD(printImage, deviceInfo:(NSDictionary *)device printerUri: (NSSt
     };
 }
 
+- (NSDictionary *) serializeDeviceStatus:(BRLMPrinterStatus *)status {
+    BRLMMediaInfo *mediaInfo = status.mediaInfo;
+    bool success;
+    BRLMQLPrintSettingsLabelSize labelSize = [mediaInfo getQLLabelSize:&success];
+    
+    return @{
+        @"model": @(status.model),
+        @"mediaType": @(status.mediaInfo.mediaType),
+        @"backgroundColor": @(status.mediaInfo.backgroundColor),
+        @"inkColor": @(status.mediaInfo.inkColor),
+        @"width_mm": @(status.mediaInfo.width_mm),
+        @"height_mm": @(status.mediaInfo.height_mm),
+        @"isHeightInfinite": @(status.mediaInfo.isHeightInfinite),
+        @"labelSize": success == YES ? @(labelSize) : Nil,
+    };
+}
+
 - (BRPtouchDeviceInfo *) deserializeDeviceInfo:(NSDictionary *)device {
     BRPtouchDeviceInfo *deviceInfo = [[BRPtouchDeviceInfo alloc] init];
 
-//    return @{
-//        @"ipAddress": device.strIPAddress,
-//        @"location": device.strLocation,
-//        @"modelName": device.strModelName,
-//        @"printerName": device.strPrinterName,
-//        @"serialNumber": device.strSerialNumber,
-//        @"nodeName": device.strNodeName,
-//        @"macAddress": device.strMACAddress,
-//    };
-//
-//
     deviceInfo.strIPAddress = [RCTConvert NSString:device[@"ipAddress"]];
     deviceInfo.strLocation = [RCTConvert NSString:device[@"location"]];
     deviceInfo.strModelName = [RCTConvert NSString:device[@"modelName"]];

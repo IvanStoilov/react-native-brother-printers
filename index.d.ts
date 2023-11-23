@@ -7,25 +7,30 @@ export const LabelSizeDieCutW38H90 = 5;
 export const LabelSizeDieCutW39H48 = 6;
 export const LabelSizeDieCutW52H29 = 7;
 export const LabelSizeDieCutW62H29 = 8;
-export const LabelSizeDieCutW62H100 = 9;
-export const LabelSizeDieCutW60H86 = 10;
-export const LabelSizeDieCutW54H29 = 11;
-export const LabelSizeDieCutW102H51 = 12;
-export const LabelSizeDieCutW102H152 = 13;
-export const LabelSizeDieCutW103H164 = 14;
-export const LabelSizeRollW12 = 15;
-export const LabelSizeRollW29 = 16;
-export const LabelSizeRollW38 = 17;
-export const LabelSizeRollW50 = 18;
-export const LabelSizeRollW54 = 19;
-export const LabelSizeRollW62 = 20;
-export const LabelSizeRollW62RB = 21;
-export const LabelSizeRollW102 = 22;
-export const LabelSizeRollW103 = 23;
-export const LabelSizeDTRollW90 = 24;
-export const LabelSizeDTRollW102 = 25;
-export const LabelSizeDTRollW102H51 = 26;
-export const LabelSizeDTRollW102H152 = 27;
+export const LabelSizeDieCutW62H60 = 9;
+export const LabelSizeDieCutW62H75 = 10;
+export const LabelSizeDieCutW62H100 = 11;
+export const LabelSizeDieCutW60H86 = 12;
+export const LabelSizeDieCutW54H29 = 13;
+export const LabelSizeDieCutW102H51 = 14;
+export const LabelSizeDieCutW102H152 = 15;
+export const LabelSizeDieCutW103H164 = 16;
+export const LabelSizeRollW12 = 17;
+export const LabelSizeRollW29 = 18;
+export const LabelSizeRollW38 = 19;
+export const LabelSizeRollW50 = 20;
+export const LabelSizeRollW54 = 21;
+export const LabelSizeRollW62 = 22;
+export const LabelSizeRollW62RB = 23;
+export const LabelSizeRollW102 = 24;
+export const LabelSizeRollW103 = 25;
+export const LabelSizeDTRollW90 = 26;
+export const LabelSizeDTRollW102 = 27;
+export const LabelSizeDTRollW102H51 = 28;
+export const LabelSizeDTRollW102H152 = 29;
+export const LabelSizeRoundW12DIA = 30;
+export const LabelSizeRoundW24DIA = 31;
+export const LabelSizeRoundW58DIA = 32;
 
 export const LabelSize: {
   LabelSizeDieCutW17H54: number;
@@ -37,6 +42,8 @@ export const LabelSize: {
   LabelSizeDieCutW39H48: number;
   LabelSizeDieCutW52H29: number;
   LabelSizeDieCutW62H29: number;
+  LabelSizeDieCutW62H60: number;
+  LabelSizeDieCutW62H75: number;
   LabelSizeDieCutW62H100: number;
   LabelSizeDieCutW60H86: number;
   LabelSizeDieCutW54H29: number;
@@ -56,13 +63,17 @@ export const LabelSize: {
   LabelSizeDTRollW102: number;
   LabelSizeDTRollW102H51: number;
   LabelSizeDTRollW102H152: number;
+  LabelSizeRoundW12DIA: number;
+  LabelSizeRoundW24DIA: number;
+  LabelSizeRoundW58DIA: number;
 };
 
 export const LabelNames: string[];
 
-export function discoverPrinters(
-  params?: { V6?: boolean; printerName?: string }
-): Promise<void>;
+export function discoverPrinters(params?: {
+  V6?: boolean;
+  printerName?: string;
+}): Promise<void>;
 
 export function pingPrinter(ip: string): Promise<void>;
 
@@ -76,10 +87,28 @@ export interface Device {
   macAddress?: string;
 }
 
+export interface PrinterStatus {
+  model: number;
+  mediaType: number;
+  backgroundColor: number;
+  inkColor: number;
+  width_mm: number;
+  height_mm: number;
+  isHeightInfinite: boolean;
+  labelSize: number | null;
+}
+
 export function printImage(
   device: Device,
   uri: string,
-  params: { autoCut?: boolean; labelSize: number, isHighQuality?: boolean, isHalftoneErrorDiffusion?: boolean }
+  params: {
+    autoCut?: boolean;
+    labelSize: number;
+    isHighQuality?: boolean;
+    isHalftoneErrorDiffusion?: boolean;
+  }
 ): Promise<any>;
+
+export function getPrinterStatus(device: Device): Promise<PrinterStatus>;
 
 export function registerBrotherListener(key: any, method: any): any;
