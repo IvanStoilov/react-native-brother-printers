@@ -1,5 +1,5 @@
 {
-  "name": "@w3lcome/react-native-brother-printers",
+  "name": "@ivanstoilov/react-native-brother-printers",
   "title": "React Native Brother Printers",
   "version": "0.1.3",
   "description": "A package that allows you to printer with brother printers",
@@ -18,8 +18,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/W3lcomeApp/react-native-brother-printers.git",
-    "baseUrl": "https://github.com/W3lcomeApp/react-native-brother-printers"
+    "url": "git+https://github.com/IvanStoilov/react-native-brother-printers.git",
+    "baseUrl": "https://github.com/IvanStoilov/react-native-brother-printers"
   },
   "keywords": [
     "react-native",
@@ -32,6 +32,7 @@
     "email": "avery@dripos.com"
   },
   "contributors": [
+    "Ivan Stoilov",
     "Alisson Enz Rossi <alisson@w3lcome.com>"
   ],
   "license": "MIT",

@@ -4,11 +4,11 @@ React Native Brother Printers is a react-native module that will allow you to in
 
 ## Getting started
 
-`$ npm install @w3lcome/react-native-brother-printers --save`
+`$ npm install @ivanstoilov/react-native-brother-printers --save`
 
 or
 
-`$ yarn add @w3lcome/react-native-brother-printers`
+`$ yarn add @ivanstoilov/react-native-brother-printers`
 
 ### Mostly automatic installation
 
@@ -16,7 +16,7 @@ or
 
 or if you are using React Native before version 0.60,
 
-`$ react-native link @w3lcome/react-native-brother-printers`
+`$ react-native link @ivanstoilov/react-native-brother-printers`
 
 ## Usage
 
@@ -29,7 +29,7 @@ the printer name, or V6 to enable ipv6 detection. Both parameters can be left bl
 import {
   discoverPrinters,
   registerBrotherListener,
-} from "@w3lcome/react-native-brother-printers";
+} from "@ivanstoilov/react-native-brother-printers";
 
 discoverPrinters({
   V6: true,
@@ -48,7 +48,7 @@ the second being the uri of the image you want to print, and the third being an 
 You can find a list of LabelSize and LabelNames inside the package as well.
 
 ```javascript
-import {printImage, LabelSize} from "@w3lcome/react-native-brother-printers";
+import {printImage, LabelSize} from "@ivanstoilov/react-native-brother-printers";
 
 await printImage(printer, uri, {labelSize: LabelSize.LabelSizeRollW62RB});
 ```
