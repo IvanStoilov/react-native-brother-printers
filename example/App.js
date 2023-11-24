@@ -10,7 +10,7 @@
 
 import React, {Component} from 'react';
 import {Button, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
-import {discoverPrinters, pingPrinter, printImage, registerBrotherListener} from 'react-native-brother-printers';
+import {discoverPrinters, pingPrinter, printImage, registerBrotherListener} from '@ivanstoilov/react-native-brother-printers';
 import ViewShot from "react-native-view-shot";
 
 export default class App extends Component {
