@@ -25,6 +25,6 @@ Pod::Spec.new do |s|
   s.resources = 'ios/**/*.plist'
 
   s.dependency "React"
-  s.dependency "BRLMPrinterKit_v4"
+  s.dependency "BRLMPrinterKitSDK"
 end
 
